@@ -6,11 +6,15 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // Generate some dummy data for the cahrt
-  // This will be used to draw the red line
   final List<FlSpot> dummyData1 = List.generate(8, (index) {
     return FlSpot(index.toDouble(), index * Random().nextDouble());
   });
@@ -25,6 +29,30 @@ class MyApp extends StatelessWidget {
     return FlSpot(index.toDouble(), index * Random().nextDouble());
   });
 
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,6 +65,9 @@ class MyApp extends StatelessWidget {
               title: const Text('FINTRACK'),
               centerTitle: true,
               backgroundColor: Colors.grey.shade400,
+            ),
+            SizedBox(
+              height: 10,
             ),
             Container(
               decoration: BoxDecoration(
@@ -55,6 +86,9 @@ class MyApp extends StatelessWidget {
                 }).toList(),
                 onChanged: (_) {},
               ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -95,12 +129,15 @@ class MyApp extends StatelessWidget {
                   foregroundColor: Colors.white,
                   textStyle: TextStyle(fontSize: 20)),
             ),
+            SizedBox(
+              height: 30,
+            ),
             Container(
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(20)),
               padding: const EdgeInsets.all(10),
-              width: double.infinity,
-              height: 300,
+              width: 340,
+              height: 260,
               child: LineChart(
                 LineChartData(
                   borderData: FlBorderData(show: false),
@@ -125,6 +162,33 @@ class MyApp extends StatelessWidget {
             ),
           ],
         )),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.query_stats,
+              ),
+              label: 'Stats',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.currency_rupee),
+              label: 'Accounts',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.more_horiz),
+              label: 'More',
+            ),
+          ],
+          selectedItemColor: Colors.amber[800],
+          unselectedItemColor: Colors.black,
+          showUnselectedLabels: true,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
