@@ -3,18 +3,22 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
+import 'accounts.dart';
+import 'stats.dart';
 
 // import 'package:fintrack/forgot_password.dart';
 // import 'package:fintrack/login.dart';
 // import 'package:fintrack/signup.dart';
 // import 'package:firebase_core/firebase_core.dart';
 
+double income = 0;
+double expense = 0;
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
   runApp(
     MaterialApp(
-      home: MyApp(),
+      home: MyApp(incm: income, exp: expense),
     ),
   );
 }
@@ -38,7 +42,10 @@ class Transaction {
 List<Transaction> trs = [];
 
 class MyApp extends StatefulWidget {
-  MyApp({super.key});
+  MyApp({Key? key, required this.incm, required this.exp}) : super(key: key);
+
+  final double incm;
+  final double exp;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -46,17 +53,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // Generate some dummy data for the cahrt
-  final List<FlSpot> dummyData1 = List.generate(8, (index) {
+  final List<FlSpot> dummyData1 = List.generate(10, (index) {
     return FlSpot(index.toDouble(), index * Random().nextDouble());
   });
 
   // This will be used to draw the orange line
-  final List<FlSpot> dummyData2 = List.generate(8, (index) {
-    return FlSpot(index.toDouble(), index * Random().nextDouble());
-  });
-
-  // This will be used to draw the blue line
-  final List<FlSpot> dummyData3 = List.generate(8, (index) {
+  final List<FlSpot> dummyData2 = List.generate(10, (index) {
     return FlSpot(index.toDouble(), index * Random().nextDouble());
   });
 
@@ -85,6 +87,28 @@ class _MyAppState extends State<MyApp> {
   }
 
   String dropdownval = list.first;
+
+  List<Widget> transactionWidgets = trs.map((transaction) {
+    return Column(
+      children: [
+        ListTile(
+          leading: const CircleAvatar(
+            child: Icon(Icons.money),
+          ),
+          title: Text("${transaction.amount}"),
+          subtitle: Text("${transaction.type}"),
+          trailing: Text("Utility"),
+          tileColor: Colors.deepPurple.shade100,
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(20)),
+        ),
+        SizedBox(
+          height: 10,
+        )
+      ],
+    );
+  }).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -127,36 +151,66 @@ class _MyAppState extends State<MyApp> {
             SizedBox(
               height: 20,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  "Income",
-                  style: TextStyle(
-                    fontFamily: 'JosefinSans',
-                    fontSize: 25.0,
-                    color: Colors.white,
+                Container(
+                  width: 160,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.green),
+                  child: Center(
+                    child: Text(
+                      "Income: ${widget.incm}",
+                      style: TextStyle(
+                        fontFamily: 'JosefinSans',
+                        fontSize: 25.0,
+                        color: Colors.white,
+                        // backgroundColor: Colors.green,
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  "Expenses",
+                Container(
+                  width: 170,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.red.shade400),
+                  child: Center(
+                    child: Text(
+                      "Expense: ${widget.exp}",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'JosefinSans',
+                        fontSize: 25.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: 160,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.cyan),
+              child: Center(
+                child: Text(
+                  "Total: ${widget.incm - widget.exp}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'JosefinSans',
                     fontSize: 25.0,
                     color: Colors.white,
                   ),
-                )
-              ],
-            ),
-            Text(
-              "Total",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'JosefinSans',
-                fontSize: 25.0,
-                color: Colors.white,
+                ),
               ),
+            ),
+            SizedBox(
+              height: 10,
             ),
             TextButton(
               // Within the `FirstRoute` widget
@@ -169,7 +223,8 @@ class _MyAppState extends State<MyApp> {
               child: Text("Add Transaction"),
               style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
                 textStyle: TextStyle(
@@ -178,7 +233,7 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             Container(
               decoration: BoxDecoration(
@@ -205,6 +260,7 @@ class _MyAppState extends State<MyApp> {
                       color: Colors.green,
                     ),
                   ],
+                  titlesData: FlTitlesData(),
                 ),
               ),
             ),
@@ -216,64 +272,23 @@ class _MyAppState extends State<MyApp> {
               margin: EdgeInsets.symmetric(vertical: 10.0),
               child: Column(
                 children: [
-                  ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.money),
-                    ),
-                    title: Text("Utility"),
-                    subtitle: Text("Expense"),
-                    trailing: Text("3500"),
-                    tileColor: Colors.deepPurple.shade100,
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.circular(20)),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.money),
-                    ),
-                    title: Text("Utility"),
-                    subtitle: Text("Expense"),
-                    trailing: Text("3500"),
-                    tileColor: Colors.deepPurple.shade100,
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.circular(20)),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.money),
-                    ),
-                    title: Text("Utility"),
-                    subtitle: Text("Expense"),
-                    trailing: Text("3500"),
-                    tileColor: Colors.deepPurple.shade100,
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.circular(20)),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.money),
-                    ),
-                    title: Text("Utility"),
-                    subtitle: Text("Expense"),
-                    trailing: Text("3500"),
-                    tileColor: Colors.deepPurple.shade100,
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.circular(20)),
-                  ),
-                ],
+                      ListTile(
+                        leading: const CircleAvatar(
+                          child: Icon(Icons.money),
+                        ),
+                        title: Text("3500"),
+                        subtitle: Text("Expense"),
+                        trailing: Text("Utility"),
+                        tileColor: Colors.deepPurple.shade100,
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ] +
+                    transactionWidgets,
               ),
             )
           ],
@@ -318,8 +333,11 @@ class SecondRoute extends StatefulWidget {
 }
 
 class _SecondRouteState extends State<SecondRoute> {
-  final List<bool> _selectedFruits = <bool>[true, false];
+  final List<bool> selected_trs = <bool>[true, false];
   bool vertical = false;
+
+  TextEditingController amtcontrol = TextEditingController();
+  TextEditingController notecontrol = TextEditingController();
 
   Future<void> _showMyDialog() async {
     return showDialog<void>(
@@ -365,8 +383,8 @@ class _SecondRouteState extends State<SecondRoute> {
               onPressed: (int index) {
                 setState(() {
                   // The button that is tapped is set to true, and the others to false.
-                  for (int i = 0; i < _selectedFruits.length; i++) {
-                    _selectedFruits[i] = i == index;
+                  for (int i = 0; i < selected_trs.length; i++) {
+                    selected_trs[i] = i == index;
                   }
                 });
               },
@@ -379,7 +397,7 @@ class _SecondRouteState extends State<SecondRoute> {
                 minHeight: 40.0,
                 minWidth: 80.0,
               ),
-              isSelected: _selectedFruits,
+              isSelected: selected_trs,
               children: fruits,
             ),
           ),
@@ -409,7 +427,8 @@ class _SecondRouteState extends State<SecondRoute> {
           SizedBox(
             height: 30,
           ),
-          const TextField(
+          TextField(
+            controller: amtcontrol,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'Enter the amount',
@@ -423,6 +442,7 @@ class _SecondRouteState extends State<SecondRoute> {
             height: 30,
           ),
           TextField(
+            controller: notecontrol,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'Add Notes',
@@ -451,7 +471,34 @@ class _SecondRouteState extends State<SecondRoute> {
                 style: TextButton.styleFrom(
                     foregroundColor: Colors.black,
                     textStyle: TextStyle(fontSize: 20)),
-                onPressed: () {},
+                onPressed: () {
+                  DateTime dt = new DateTime.now();
+                  double amt = double.parse(amtcontrol.text);
+                  String nt = notecontrol.text;
+                  String ie;
+                  if (selected_trs.first == true) {
+                    income += amt;
+                    ie = "income";
+                  } else {
+                    ie = "expense";
+                    expense += amt;
+                  }
+                  Transaction newtrs = Transaction(dt, amt, ie, 0, 0, nt);
+                  setState(() {
+                    trs.add(newtrs);
+                  });
+
+                  amtcontrol.clear();
+                  notecontrol.clear();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MyApp(
+                              incm: income,
+                              exp: expense,
+                            )),
+                  );
+                },
                 child: Text("Save"),
               ),
             ],
