@@ -1,2 +1,4 @@
 # fintrack
- Financial management application using flutter framework
+ <h2>About</h2>
+ 
+ 
