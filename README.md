@@ -4,7 +4,7 @@
  <h2>Features</h2>
  <p>1. Allow user to track their finances on regular basis.</p>
  <p>2. Helps user via visual representation of their money stats.</p>
- <p>3. User can add new transaction and select their its category and type i.e. expense/income.</p>
+ <p>3. User can add new transaction and select its category and type i.e. expense/income.</p>
  <p>4. Allow users to keep track of balances in various accounts.</p>
  <h2>Download Application</h2>
  <p><a href="https://drive.google.com/file/d/1W5YT3B2neqCBaljxHmYIh4llBcjnadyJ/view?usp=drivesdk">CLick Here</a> to download application from google drive.</p>
