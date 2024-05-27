@@ -20,8 +20,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // Generate some dummy data for the cahrt
-
+  
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
