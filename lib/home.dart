@@ -2,14 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 import 'main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:json_annotation/json_annotation.dart';
+import 'dart:convert';
+part 'home.g.dart';
 
 double income = 0;
 double expense = 0;
+
+Future<void> saveInteger(double inc, double exp) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setDouble('income', inc);
+  await prefs.setDouble('expense', exp);
+}
+
+Future<double?> getIncome() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getDouble('income');
+}
+
+Future<double?> getExpense() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getDouble('expense');
+}
+
+double? inc;
+double? exp;
+
+Future<void> loadIncomeAndExpense() async {
+  inc = await getIncome();
+  exp = await getExpense();
+  income = inc!;
+  expense = exp!;
+}
+
+void saveValues() async {
+  await saveInteger(income, expense);
+  await loadIncomeAndExpense();
+}
 
 List<String> list = <String>['Daily', 'Weekly', 'Monthly', 'Annually'];
 
 const List<Widget> fruits = <Widget>[Text('INCOME'), Text('EXPENSE')];
 
+@JsonSerializable()
 class Transaction {
   DateTime dateTime;
   double amount;
@@ -20,6 +57,57 @@ class Transaction {
 
   Transaction(this.dateTime, this.amount, this.type, this.account,
       this.category, this.notes);
+
+  // From JSON
+  factory Transaction.fromJson(Map<String, dynamic> json) =>
+      _$TransactionFromJson(json);
+
+  // To JSON
+  Map<String, dynamic> toJson() => _$TransactionToJson(this);
+}
+
+Future<void> saveTransaction(Transaction transaction) async {
+  final prefs = await SharedPreferences.getInstance();
+  String jsonString = jsonEncode(transaction.toJson());
+
+  // Save transaction with unique key
+  await prefs.setString(
+      'transaction_${transaction.dateTime.toIso8601String()}', jsonString);
+
+  // Get the list of all transaction keys
+  List<String>? transactionKeys = prefs.getStringList('transaction_keys');
+  if (transactionKeys == null) {
+    transactionKeys = [];
+  }
+
+  // Add the new transaction key and sort the list by timestamp in descending order
+  transactionKeys.add(transaction.dateTime.toIso8601String());
+  transactionKeys.sort((a, b) => b.compareTo(a)); // Sort in descending order
+
+  // Save the updated list of transaction keys
+  await prefs.setStringList('transaction_keys', transactionKeys);
+}
+
+Future<List<Transaction>> getAllTransactions() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  // Get the list of all transaction keys
+  List<String>? transactionKeys = prefs.getStringList('transaction_keys');
+  if (transactionKeys == null) {
+    return [];
+  }
+
+  // Retrieve each transaction by its key
+  List<Transaction> transactions = [];
+  for (String key in transactionKeys) {
+    String? jsonString = prefs.getString('transaction_$key');
+    if (jsonString != null) {
+      Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+      transactions.add(Transaction.fromJson(jsonMap));
+    }
+  }
+
+  return transactions;
 }
 
 List<Transaction> trs = [];
@@ -177,7 +265,6 @@ class _HomeState extends State<Home> {
                   context,
                   MaterialPageRoute(builder: (context) => SecondRoute()),
                 );
-                print(widget.incm);
               },
               child: Text("Add Transaction"),
               style: TextButton.styleFrom(
@@ -226,28 +313,25 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 30,
             ),
+            Text(
+              "Recent Transactions",
+              style: TextStyle(
+                fontFamily: 'JosefinSans',
+                fontSize: 18.0,
+                color: Colors.black,
+              ),
+            ),
+            Divider(
+              color: Colors.black, // Color of the divider
+              thickness: 1.5, // Thickness of the divider
+              indent: 10, // Empty space to the leading edge of the divider
+              endIndent: 10, // Empty space to the trailing edge of the divider
+            ),
             Container(
               width: 350,
               margin: EdgeInsets.symmetric(vertical: 10.0),
               child: Column(
-                children: [
-                      ListTile(
-                        leading: const CircleAvatar(
-                          child: Icon(Icons.money),
-                        ),
-                        title: Text("3500"),
-                        subtitle: Text("Expense"),
-                        trailing: Text("Utility"),
-                        tileColor: Colors.deepPurple.shade100,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ] +
-                    transactionWidgets,
+                children: <Widget>[] + transactionWidgets,
               ),
             )
           ],
@@ -417,6 +501,8 @@ class _SecondRouteState extends State<SecondRoute> {
                   }
                   Transaction newtrs = Transaction(dt, amt, ie, 0, 0, nt);
                   setState(() {
+                    saveValues();
+                    saveTransaction(newtrs);
                     trs.add(newtrs);
                   });
 

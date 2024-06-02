@@ -41,9 +41,14 @@ dependencies:
   google_sign_in: ^6.1.6
   cloud_firestore: ^4.13.1
   the_apple_sign_in: ^1.1.1
+  shared_preferences: ^2.2.3
+  json_annotation: ^4.9.0
+  
 
 
 dev_dependencies:
+  json_serializable: ^6.2.0
+  build_runner: ^2.4.10
   flutter_test:
     sdk: flutter
 
@@ -54,9 +59,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.1
+  flutter_launcher_icons:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/fintrack.jpeg"
 
 # The following section is specific to Flutter packages.
 flutter:
