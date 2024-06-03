@@ -19,7 +19,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {

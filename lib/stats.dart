@@ -13,159 +13,180 @@ class myStats extends StatelessWidget {
           backgroundColor: Colors.grey.shade300,
         ),
         body: SafeArea(
-            child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height: 280,
-              child: PieChart(
-                PieChartData(
-                    centerSpaceRadius: 70,
-                    centerSpaceColor: Colors.yellow,
-                    borderData: FlBorderData(show: false),
-                    sections: [
-                      PieChartSectionData(value: 20, color: Colors.blue),
-                      PieChartSectionData(value: 10, color: Colors.orange),
-                      PieChartSectionData(value: 10, color: Colors.red),
-                      PieChartSectionData(value: 10, color: Colors.purple),
-                      PieChartSectionData(value: 20, color: Colors.amber),
-                      PieChartSectionData(value: 30, color: Colors.green)
-                    ]),
+            child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: 280,
+                child: PieChart(
+                  PieChartData(
+                      centerSpaceRadius: 70,
+                      centerSpaceColor: Colors.yellow,
+                      borderData: FlBorderData(show: false),
+                      sections: [
+                        PieChartSectionData(value: 20, color: Colors.blue),
+                        PieChartSectionData(value: 10, color: Colors.orange),
+                        PieChartSectionData(value: 10, color: Colors.red),
+                        PieChartSectionData(value: 10, color: Colors.purple),
+                        PieChartSectionData(value: 20, color: Colors.amber),
+                        PieChartSectionData(value: 30, color: Colors.green)
+                      ]),
+                ),
               ),
-            ),
-            Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  // mainAxisAlignment: MainAxis/Alignment.center,
-                  children: [
-                    SizedBox(
-                      width: 120,
-                    ),
-                    Container(
-                      height: 10,
-                      width: 10,
-                      color: Color.fromARGB(255, 6, 162, 21),
-                    ),
-                    Text("Food"),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 120,
-                    ),
-                    Container(
-                      height: 10,
-                      width: 10,
-                      color: Color.fromARGB(255, 102, 192, 224),
-                    ),
-                    Text("Clothes"),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 10,
+                            color: Color.fromARGB(255, 6, 162, 21),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text("Food"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 10,
+                            color: Color.fromARGB(255, 102, 192, 224),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text("Clothes"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
 
-                  children: [
-                    SizedBox(
-                      width: 120,
-                    ),
-                    Container(
-                      height: 10,
-                      width: 10,
-                      color: Color.fromARGB(255, 217, 223, 57),
-                    ),
-                    Text("Rent"),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 120,
-                    ),
-                    Container(
-                      height: 10,
-                      width: 10,
-                      color: Color.fromARGB(255, 195, 70, 209),
-                    ),
-                    Text("Insurance"),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 120,
-                    ),
-                    Container(
-                      height: 10,
-                      width: 10,
-                      color: Color.fromARGB(255, 218, 74, 49),
-                    ),
-                    Text("Stocks"),
-                  ],
-                ),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-
-                  children: [
-                    SizedBox(
-                      width: 120,
-                    ),
-                    Container(
-                      height: 10,
-                      width: 10,
-                      color: Color.fromARGB(255, 233, 139, 56),
-                    ),
-                    Text("Miscellaneous"),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 200,
-              child: AspectRatio(
-                aspectRatio: 2,
-                child: BarChart(
-                  BarChartData(
-                    barGroups: _chartGroups(),
-                    borderData: FlBorderData(
-                        border: const Border(
-                            bottom: BorderSide(), left: BorderSide())),
-                    gridData: FlGridData(show: false),
-                    titlesData: FlTitlesData(
-                      bottomTitles: AxisTitles(sideTitles: _bottomTitles),
-                      leftTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      topTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      rightTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 10,
+                            color: Color.fromARGB(255, 217, 223, 57),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text("Rent"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 10,
+                            color: Color.fromARGB(255, 195, 70, 209),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text("Insurance"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            height: 10,
+                            width: 10,
+                            color: Color.fromARGB(255, 218, 74, 49),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text("Stocks"),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Container(
+                        height: 10,
+                        width: 10,
+                        color: Color.fromARGB(255, 233, 139, 56),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text("Miscellaneous"),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Container(
+                height: 200,
+                child: AspectRatio(
+                  aspectRatio: 2,
+                  child: BarChart(
+                    BarChartData(
+                      barGroups: _chartGroups(),
+                      borderData: FlBorderData(
+                          border: const Border(
+                              bottom: BorderSide(), left: BorderSide())),
+                      gridData: FlGridData(show: false),
+                      titlesData: FlTitlesData(
+                        bottomTitles: AxisTitles(sideTitles: _bottomTitles),
+                        leftTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false)),
+                        topTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false)),
+                        rightTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false)),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         )));
   }
 

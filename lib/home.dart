@@ -124,13 +124,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<FlSpot> data1 = List.generate(10, (index) {
-    return FlSpot(index.toDouble(), index * Random().nextDouble());
-  });
-
-  final List<FlSpot> data2 = List.generate(10, (index) {
-    return FlSpot(index.toDouble(), index * Random().nextDouble());
-  });
+  final List<FlSpot> data1 = [];
+  final List<FlSpot> data2 = [];
 
   String dropdownval = list.first;
 
@@ -160,6 +155,19 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    for (int i = 0; i < trs.length; i++) {
+      Transaction t = trs[i];
+      double x = i.toDouble();
+
+      if (t.type == 'income') {
+        data1.add(FlSpot(x, t.amount));
+        data2.add(FlSpot(x, 0));
+      } else if (t.type == 'expense') {
+        data2.add(FlSpot(x, t.amount));
+        data1.add(FlSpot(x, 0));
+      }
+    }
+
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -207,10 +215,11 @@ class _HomeState extends State<Home> {
                       color: Colors.green),
                   child: Center(
                     child: Text(
+                      textAlign: TextAlign.center,
                       "Income: ${widget.incm}",
                       style: TextStyle(
                         fontFamily: 'JosefinSans',
-                        fontSize: 25.0,
+                        fontSize: 24.0,
                         color: Colors.white,
                         // backgroundColor: Colors.green,
                       ),
@@ -228,7 +237,7 @@ class _HomeState extends State<Home> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'JosefinSans',
-                        fontSize: 25.0,
+                        fontSize: 24.0,
                         color: Colors.white,
                       ),
                     ),
@@ -249,7 +258,7 @@ class _HomeState extends State<Home> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'JosefinSans',
-                    fontSize: 25.0,
+                    fontSize: 24.0,
                     color: Colors.white,
                   ),
                 ),
@@ -283,25 +292,25 @@ class _HomeState extends State<Home> {
             ),
             Container(
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
-              padding: const EdgeInsets.all(10),
+                  color: Colors.white, borderRadius: BorderRadius.circular(16)),
+              padding: const EdgeInsets.all(6),
               width: 340,
               height: 260,
               child: LineChart(
                 LineChartData(
                   borderData: FlBorderData(show: false),
                   lineBarsData: [
-                    // The red line
+                    //expense data
                     LineChartBarData(
-                      spots: data1,
-                      isCurved: true,
+                      spots: data2,
+                      isCurved: false,
                       barWidth: 3,
                       color: Colors.red,
                     ),
-                    // The orange line
+                    //income data
                     LineChartBarData(
-                      spots: data2,
-                      isCurved: true,
+                      spots: data1,
+                      isCurved: false,
                       barWidth: 3,
                       color: Colors.green,
                     ),

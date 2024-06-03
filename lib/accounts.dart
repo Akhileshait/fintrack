@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -36,10 +37,17 @@ class account extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Avl Balance: 100",
-                style: TextStyle(
-                  fontSize: 23.0,
+              Container(
+                padding: EdgeInsets.all(6.0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: Colors.green.shade300),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  "Net Balance: ${income - expense}",
+                  style: TextStyle(
+                    fontSize: 23.0,
+                  ),
                 ),
               )
             ],
@@ -63,7 +71,7 @@ class account extends StatelessWidget {
             children: [
               ListTile(
                 leading: Icon(Icons.credit_card),
-                title: Text("Credit Card "),
+                title: Text("Digital Wallets"),
                 tileColor: Colors.blue.shade100,
               ),
             ],
