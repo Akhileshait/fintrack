@@ -7,7 +7,7 @@
  <p>3. User can add new transaction and select its category and type i.e. expense/income.</p>
  <p>4. Allow users to keep track of balances in various accounts.</p>
  <h2>Download Application</h2>
- <p><a href="https://drive.google.com/file/d/1W5YT3B2neqCBaljxHmYIh4llBcjnadyJ/view?usp=drivesdk">CLick Here</a> to download application from google drive.</p>
+ <p><a href="[https://drive.google.com/file/d/1W5YT3B2neqCBaljxHmYIh4llBcjnadyJ/view?usp=drivesdk](https://drive.google.com/file/d/1j4T7yW_jFWFh_-d4YQNLGDtd1mzT4kmK/view?usp=sharing)">CLick Here</a> to download application from google drive.</p>
  <h2>Installation:</h2>
  <p>Clone the repository</p>
  
