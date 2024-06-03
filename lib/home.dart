@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'dart:math';
-import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:json_annotation/json_annotation.dart';
@@ -134,6 +132,15 @@ class _HomeState extends State<Home> {
 
   String dropdownval = list.first;
 
+  void _navigateAndAddTransaction(BuildContext context) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SecondRoute()),
+    );
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> transactionWidgets = trs.map((transaction) {
@@ -221,7 +228,7 @@ class _HomeState extends State<Home> {
                   child: Center(
                     child: Text(
                       textAlign: TextAlign.center,
-                      "Income: ${widget.incm}",
+                      "Income: ${income}",
                       style: TextStyle(
                         fontFamily: 'JosefinSans',
                         fontSize: 24.0,
@@ -238,7 +245,7 @@ class _HomeState extends State<Home> {
                       color: Colors.red.shade400),
                   child: Center(
                     child: Text(
-                      "Expense: ${widget.exp}",
+                      "Expense: ${expense}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'JosefinSans',
@@ -259,7 +266,7 @@ class _HomeState extends State<Home> {
                   borderRadius: BorderRadius.circular(10), color: Colors.cyan),
               child: Center(
                 child: Text(
-                  "Total: ${widget.incm - widget.exp}",
+                  "Total: ${income - expense}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'JosefinSans',
@@ -275,10 +282,7 @@ class _HomeState extends State<Home> {
             TextButton(
               // Within the `FirstRoute` widget
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SecondRoute()),
-                );
+                _navigateAndAddTransaction(context);
               },
               child: Text("Add Transaction"),
               style: TextButton.styleFrom(
@@ -522,10 +526,7 @@ class _SecondRouteState extends State<SecondRoute> {
 
                   amtcontrol.clear();
                   notecontrol.clear();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyApp()),
-                  );
+                  Navigator.pop(context);
                 },
                 child: Text("Save"),
               ),

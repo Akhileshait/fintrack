@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'accounts.dart';
 import 'stats.dart';
 import 'home.dart';
+// import 'package:restart_app/restart_app.dart';
 
 void main() {
   runApp(
@@ -36,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   void _loadIncomeAndExpense() async {
     await loadIncomeAndExpense();
     trs = await getAllTransactions();
-    setState(() {}); // Trigger a rebuild after loading values
+    setState(() {});
   }
 
   @override
@@ -68,7 +69,10 @@ class _MyAppState extends State<MyApp> {
                   title: Text('Delete & Reset', style: TextStyle(fontSize: 18)),
                   onTap: () {
                     clearData();
-                    setState(() {});
+                    // Restart.restartApp();
+                    setState(() {
+                      Home(incm: income, exp: expense);
+                    });
                   },
                 ),
                 ListTile(
