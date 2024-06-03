@@ -45,10 +45,59 @@ class _MyAppState extends State<MyApp> {
       Home(incm: income, exp: expense),
       myStats(),
       account(),
-      SafeArea(
-          child: Center(
-        child: Text("More..."),
-      ))
+      Scaffold(
+        appBar: AppBar(
+          title: Center(child: Text('More Options')),
+        ),
+        body: Align(
+          alignment: Alignment(0, -0.8),
+          child: Container(
+            width: 240,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.settings, size: 30),
+                  title: Text('Settings', style: TextStyle(fontSize: 18)),
+                  onTap: () {
+                    // Navigate to the settings screen
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.delete, size: 30),
+                  title: Text('Delete & Reset', style: TextStyle(fontSize: 18)),
+                  onTap: () {
+                    clearData();
+                    setState(() {});
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.upload_file, size: 30),
+                  title: Text('Export Records', style: TextStyle(fontSize: 18)),
+                  onTap: () {
+                    // Implement export records functionality
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.backup, size: 30),
+                  title:
+                      Text('Backup & Restore', style: TextStyle(fontSize: 18)),
+                  onTap: () {
+                    // Implement backup and restore functionality
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.help, size: 30),
+                  title: Text('Help', style: TextStyle(fontSize: 18)),
+                  onTap: () {
+                    // Navigate to the help screen
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      )
     ];
 
     return Scaffold(

@@ -17,6 +17,11 @@ Future<void> saveInteger(double inc, double exp) async {
   await prefs.setDouble('expense', exp);
 }
 
+void clearData() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.clear();
+}
+
 Future<double?> getIncome() async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.getDouble('income');
@@ -129,32 +134,32 @@ class _HomeState extends State<Home> {
 
   String dropdownval = list.first;
 
-  List<Widget> transactionWidgets = trs.map((transaction) {
-    return SafeArea(
-      child: Column(
-        children: [
-          ListTile(
-            leading: const CircleAvatar(
-              child: Icon(Icons.money),
-            ),
-            title: Text("${transaction.amount}"),
-            subtitle: Text("${transaction.type}"),
-            trailing: Text("Utility"),
-            tileColor: Colors.deepPurple.shade100,
-            shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.black),
-                borderRadius: BorderRadius.circular(20)),
-          ),
-          SizedBox(
-            height: 10,
-          )
-        ],
-      ),
-    );
-  }).toList();
-
   @override
   Widget build(BuildContext context) {
+    List<Widget> transactionWidgets = trs.map((transaction) {
+      return SafeArea(
+        child: Column(
+          children: [
+            ListTile(
+              leading: const CircleAvatar(
+                child: Icon(Icons.money),
+              ),
+              title: Text("${transaction.amount}"),
+              subtitle: Text("${transaction.type}"),
+              trailing: Text("Utility"),
+              tileColor: Colors.deepPurple.shade100,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(20)),
+            ),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        ),
+      );
+    }).toList();
+
     for (int i = 0; i < trs.length; i++) {
       Transaction t = trs[i];
       double x = i.toDouble();
